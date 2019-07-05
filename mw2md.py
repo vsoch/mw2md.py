@@ -87,12 +87,13 @@ class MarkdownConverter:
                 markdown = holder
                 is_image = True
 
-            markdown = "[%s](%s.md)" %(title.strip(), 
-                                       markdown.lower().strip().replace(' ', '-'))
-
-            # Images will start with File:
+            markdown = markdown.lower().strip().replace(' ', '-')
+ 
             if is_image:
-                markdown = "!%s" % markdown
+                markdown = "![%s](%s)" %(title.strip(), markdown)
+            else:
+                markdown = "[%s](%s.md)" %(title.strip(), markdown)
+ 
             line = line.replace("[[%s]]" % match, markdown)
              
         markup_regex = '\[(http[s]?://.+?)\]'
