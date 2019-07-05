@@ -80,18 +80,14 @@ class MarkdownConverter:
             title, markdown = match.split('|')
 
             # If it's an image, the title is the filename
-            is_image = False
             if re.search("^(F|f)ile:", title):
                 holder = re.sub('(F|f)ile:', '', title)
                 title = markdown
-                markdown = holder
-                is_image = True
-
-            markdown = markdown.lower().strip().replace(' ', '-')
- 
-            if is_image:
+                markdown = holder.strip().replace(' ', '-')
                 markdown = "![%s](%s)" %(title.strip(), markdown)
+
             else:
+                markdown = markdown.lower().strip().replace(' ', '-')
                 markdown = "[%s](%s.md)" %(title.strip(), markdown)
  
             line = line.replace("[[%s]]" % match, markdown)
