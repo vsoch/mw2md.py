@@ -53,6 +53,14 @@ class MarkdownConverter:
         else:
             print(''.join(lines))
 
+
+# Conversion Functions ---------------------------------------------------------
+# Each function below handles parsing one line, and should be wrapped by
+# apply_lines, with the function as the first argument, and a list
+# of lines as the second:  apply_lines(func, lines)(). This is a lazy
+# man's decorator :)
+
+
     def _convert_lists(self, line):
         '''handle bullets in lists.
         '''
@@ -67,11 +75,24 @@ class MarkdownConverter:
            to
            [Slurm Commands](https://slurm.schedmd.com/pdfs/summary.pdf)
         '''
-        # Internal Links convert to markdown
+        # Internal Links and images convert to markdown
         for match in re.findall("\[\[(.+\|.+)\]\]", line):
             title, markdown = match.split('|')
+
+            # If it's an image, the title is the filename
+            is_image = False
+            if re.search("^(F|f)ile:", title):
+                holder = re.sub('(F|f)ile:', '', title)
+                title = markdown
+                markdown = holder
+                is_image = True
+
             markdown = "[%s](%s.md)" %(title.strip(), 
                                        markdown.lower().strip().replace(' ', '-'))
+
+            # Images will start with File:
+            if is_image:
+                markdown = "!%s" % markdown
             line = line.replace("[[%s]]" % match, markdown)
              
         markup_regex = '\[(http[s]?://.+?)\]'
