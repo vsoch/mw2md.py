@@ -26,3 +26,20 @@ Transforming MediWiki from '/home/vanessa/Documents/Dropbox/Code/srcc/mw2md.py/i
 Writing output to index.md
 ```
 
+# Html to Markdown
+
+I needed a quick script to convert from HTML to Markdown, so I bootstrapped
+[python-markdownify](https://github.com/matthewwithanm/python-markdownify) to
+handle most of the work. The usage is the same as above, but providing html files
+as input, and then also writing markdown. You also need to install
+markdownify:
+
+```bash
+$ pip install -r requirements.txt
+```
+
+And then convert!
+
+```bash
+$ python html2md.py index.html
+```
