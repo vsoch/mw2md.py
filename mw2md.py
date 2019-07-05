@@ -141,10 +141,8 @@ if __name__=="__main__":
     source = sys.argv[1]
 
     dest = None
-    quiet = True
     if len(sys.argv) > 2:
         dest = sys.argv[2]
-        quiet = False
 
-    converter = MarkdownConverter(source, dest, quiet)
+    converter = MarkdownConverter(source, dest)
     converter.run()
