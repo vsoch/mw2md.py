@@ -35,14 +35,19 @@ class MarkdownConverter:
         self.dest = dest
 
     def run(self):
-        print("Transforming MediWiki from '%s' to MarkDown syntax..." % self.source)
+
+        # If printing to terminal, might pipe to file, must be quiet
+        if self.dest:
+            print("Transforming MediWiki from '%s' to MarkDown syntax..." % self.source)
+
         lines = read_file(self.source)
         lines = apply_lines(self._convert_headers, lines)()
         lines = apply_lines(self._convert_emphasis, lines)()
         lines = apply_lines(self._convert_links, lines)()
         lines = apply_lines(self._convert_codeblocks, lines)()
         lines = apply_lines(self._convert_lists, lines)()
-        if self.dest is not None:
+
+        if self.dest:
             print("Writing output to %s" % self.dest)
             write_file(self.dest, ''.join(lines))
         else:
@@ -136,8 +141,10 @@ if __name__=="__main__":
     source = sys.argv[1]
 
     dest = None
+    quiet = True
     if len(sys.argv) > 2:
         dest = sys.argv[2]
+        quiet = False
 
-    converter = MarkdownConverter(source, dest)
+    converter = MarkdownConverter(source, dest, quiet)
     converter.run()
